@@ -2,6 +2,17 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var mongoDB = 'mongodb://TrendanBoolan:RumHam96@ds115592.mlab.com:15592/g00350190';
+mongoose.connect(mongoDB);
+
+var Schema = mongoose.Schema;
+    var postSchema = new Schema({
+        title: String,
+        content: String
+    })
+
+    var PostData = mongoose.model('Post', postSchema); 
 
 //Here we are configuring express to use body-parser as middle-ware. 
 app.use(bodyParser.urlencoded({ extended: false })); 
@@ -14,23 +25,54 @@ app.use(function(req, res, next) {
     next();
     });
     
-app.post('/name', function(req, res){
-    res.send("Hello you sent " +
-    req.body.firstname + " " +
-    req.body.lastname);
-})
+// app.post('/name', function(req, res){
+//     res.send("Hello you sent " +
+//     req.body.firstname + " " +
+//     req.body.lastname);
+// })
 
-app.get('/', function (req, res) {
-   res.send('Hello from Express');
-})
+// app.get('/', function (req, res) {
+//    res.send('Hello from Express');
+// })
+
+// app.post('/api/posts', function(req, res){
+//     console.log("post successful");
+//     console.log(req.body.title);
+//     console.log(req.body.content);
+
+
+// })
+
 
 app.post('/api/posts', function(req, res){
-    console.log("post successful");
-    console.log(req.body.title);
-    console.log(req.body.content);
+    PostData.create({
+        title : req.body.title,
+        content : req.body.content
+    });
+    console.log("Inserting Item");
 })
 
 app.get('/api/posts', function(req, res){
+    PostData.find(function(err,posts){
+        if(err)
+            res.send(err)
+        res.json(posts);
+    });
+})
+
+// app.get('/getposts/:title', function (req, res){
+//     console.log("Get " + req.params.title+" Post");
+
+//     PostData.find({'title': req.params.title},
+//         function (err, data){
+//             if(err)
+//             return handleError(err);
+
+//         res.json(data);
+//         });
+//     });
+
+/*app.get('/api/posts', function(req, res){
 
     const posts = 
     [
@@ -47,7 +89,7 @@ app.get('/api/posts', function(req, res){
     ];
 
     res.status(200).json({posts:posts})
-})
+})*/
 
 
 var server = app.listen(8081, function () {
