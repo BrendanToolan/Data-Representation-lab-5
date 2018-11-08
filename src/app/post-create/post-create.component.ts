@@ -19,7 +19,6 @@ export class PostCreateComponent implements OnInit {
     form.resetForm();
   }
 
-
   ngOnInit() {
 
 

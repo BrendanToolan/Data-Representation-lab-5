@@ -14,6 +14,13 @@ export class PostDetailsComponent implements OnInit {
 
   constructor(private ps:PostService){}
 
+  onDelete(id: string)
+  {
+    console.log(" Deleting Item")
+    this.ps.deletePost(id).subscribe();
+    this.ngOnInit();
+  }
+
   ngOnInit(){
     //this.posts = this.ps.getPosts();
     this.ps.getPostsData().subscribe(data => {

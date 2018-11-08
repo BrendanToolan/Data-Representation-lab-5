@@ -60,6 +60,18 @@ app.get('/api/posts', function(req, res){
     });
 })
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin","*");
+    res.header("Access-Control-Allow-Mehtods", "GET,POST,DELETE,PUT,OPTIONS");
+    res.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+app.delete('/api/posts/:id', function(req, res){
+    PostData.deleteOne({_id: req.params.id},
+    function (err) {} )
+})
+
 // app.get('/getposts/:title', function (req, res){
 //     console.log("Get " + req.params.title+" Post");
 
@@ -90,6 +102,8 @@ app.get('/api/posts', function(req, res){
 
     res.status(200).json({posts:posts})
 })*/
+
+
 
 
 var server = app.listen(8081, function () {
